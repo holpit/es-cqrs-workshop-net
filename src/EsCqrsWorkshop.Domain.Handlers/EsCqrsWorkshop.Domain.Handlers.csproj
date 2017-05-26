@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddOrderHandler.cs" />
+    <Compile Include="CompleteOrderHandler.cs" />
     <Compile Include="CreatePizzeriaHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

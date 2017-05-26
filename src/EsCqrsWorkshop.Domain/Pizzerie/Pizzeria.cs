@@ -63,5 +63,24 @@ namespace EsCqrsWorkshop.Domain.Pizzerie
 
         }
 
+        public Guid CompleteOrder(Guid pizzeriaId, Guid orderId)
+        {
+            if (orderId == null) throw new ArgumentNullException(nameof(orderId));
+
+            var order = this.Data.Orders.Single(x => x.Id == orderId);
+            order.Completed = true;
+
+            this.RaiseEvent<IOrderCompleted>(e =>
+            {
+                e.PizzeriaId = pizzeriaId;
+                e.OrderId = order.Id;
+                e.CustomerName = order.CustomerName;
+                e.PizzaTaste = order.CustomerName;
+            });
+
+            return order.Id;
+
+        }
+
     }
 }

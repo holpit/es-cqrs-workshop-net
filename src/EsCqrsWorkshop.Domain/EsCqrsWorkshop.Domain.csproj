@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pizzerie\IOrderCompleted.cs" />
     <Compile Include="Pizzerie\IOrderReceived.cs" />
     <Compile Include="Pizzerie\IPizzeriaCreated.cs" />
     <Compile Include="Pizzerie\Pizzeria.cs" />

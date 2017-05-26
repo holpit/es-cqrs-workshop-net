@@ -108,7 +108,21 @@ namespace EsCqrsWorkshop.WpfClient.Presentation
 
         public void AddOrder()
         {
+            if (this.SelectedPizzeria == null)
+                return;
 
+            if (string.IsNullOrEmpty(this.NewOrderCustomerName))
+                return;
+
+            if (string.IsNullOrEmpty(this.NewOrderPizzaTaste))
+                return;
+
+            using (var client = this.clientFactory.CreateClient())
+            {
+                client.Execute(new AddOrder(this.SelectedPizzeria.PizzeriaId, this.NewOrderCustomerName, this.NewOrderPizzaTaste));
+            }
+
+            this.PopulateOrders();
         }
 
         public void CompleteOrder()

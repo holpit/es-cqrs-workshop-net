@@ -44,5 +44,24 @@ namespace EsCqrsWorkshop.Domain.Pizzerie
             });
         }
 
+        public Guid AddOrder(string customerName, string pizzaTaste)
+        {
+            if (customerName == null) throw new ArgumentNullException(nameof(customerName));
+            if (pizzaTaste == null) throw new ArgumentNullException(nameof(pizzaTaste));
+
+            var order = new Order(Id, customerName, pizzaTaste);
+            this.Data.Orders.Add(order);
+
+            this.RaiseEvent<IOrderReceived>(e =>
+            {
+                e.CustomerName = customerName;
+                e.PizzaTaste = pizzaTaste;
+                e.OrderId = order.Id;
+            });
+
+            return order.Id;
+
+        }
+
     }
 }

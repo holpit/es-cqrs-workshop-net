@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using EsCqrsWorkshop.Messages.Commands;
 using EsCqrsWorkshop.ViewModels;
 using Topics.Radical.Windows.Presentation;
 using Topics.Radical.Windows.Presentation.ComponentModel;
@@ -93,7 +94,15 @@ namespace EsCqrsWorkshop.WpfClient.Presentation
 
         public void CreateNewPizzeria()
         {
+            if (string.IsNullOrEmpty(this.NewPizzeriaName))
+                return;
 
+            using (var client = this.clientFactory.CreateClient())
+            {
+                client.Execute(new CreatePizzeria(this.NewPizzeriaName));
+            }
+
+            this.PopulatePizzerie();
 
         }
 
@@ -114,6 +123,8 @@ namespace EsCqrsWorkshop.WpfClient.Presentation
 
         async Task PopulatePizzerie()
         {
+            this.Pizzerie = new ObservableCollection<PizzeriaView>();
+
             using (var db = this.pizzerieViewContextFactory.Create())
             {
                 var all = await db.PizzerieView

@@ -21,5 +21,28 @@ namespace EsCqrsWorkshop.Domain.Pizzerie
         {
         }
 
+        public class Factory
+        {
+            public Pizzeria CreateNew(string nome)
+            {
+                var state = new PizzeriaState()
+                {
+                    Name = nome,
+                    Orders = new HashSet<Order>()
+                };
+                var aggregate = new Pizzeria(state);
+                aggregate.SetupCompleted();
+                return aggregate;
+            }
+        }
+
+        private void SetupCompleted()
+        {
+            this.RaiseEvent<IPizzeriaCreated>(e =>
+            {
+                e.Name = this.Data.Name;
+            });
+        }
+
     }
 }
